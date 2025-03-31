@@ -1,0 +1,7 @@
+streamlit
+pymongo
+neo4j-driver
+python-dotenv
+pandas
+scipy
+networkx
