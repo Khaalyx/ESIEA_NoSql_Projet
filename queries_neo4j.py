@@ -175,7 +175,7 @@ def actors_with_most_directors():
     
     st.info(str)
 
-# 23. Recommander un film à un acteur en fonction des genres des films où il a déjà joué.
+# Récupérer tous les acteurs pour les selectbox
 def get_all_actors():
     query = """
     MATCH (a:Actor)
@@ -188,6 +188,7 @@ def get_all_actors():
 
     return list(acteurs_list)
 
+# 23. Recommander un film à un acteur en fonction des genres des films où il a déjà joué.
 def recommendations_for_actors(actor):
     query = """
     MATCH (a:Actor {name: $actor})-[:A_JOUE]->(f:Film)-[:APPARTIENT_A]->(g:Genre)
@@ -280,7 +281,6 @@ def analyze_actor_communities():
     for community_id, actor in enumerate(partition):
         communities.setdefault(community_id, []).append(actor)
 
-    # Afficher les communautés
     result_str = ""
     for community_id, actors in communities.items():
         flat_actors = {str(actor) for group in actors for actor in group}  # Aplatis les sets

@@ -6,6 +6,9 @@ import queries_transversales as transversales
 st.title("NoSQL Databases - Projet")
 st.write("Exploration et Interrogation de Bases de Données NoSQL avec Python")
 
+# Récupérer la liste des acteurs pour les selectbox
+actors = neo4j.get_all_actors() 
+
 st.divider() # --------------------------------------------
 
 # ---------------------------------------------------------#
@@ -89,7 +92,6 @@ st.subheader("22. Les 5 acteurs ayant joué avec le plus de réalisateurs diffé
 neo4j.actors_with_most_directors()
 
 st.subheader("23. Recommander un film à un acteur en fonction des genres des films où il a déjà joué")
-actors = neo4j.get_all_actors()
 actor = st.selectbox("Sélectionner un acteur", actors, key="recommendations_for_actors")
 neo4j.recommendations_for_actors(actor)
 

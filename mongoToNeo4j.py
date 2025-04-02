@@ -9,7 +9,8 @@ driver = get_neo4j()
 
 def create_nodes_and_relations():
     with driver.session() as session:
-        # Extraction des films depuis MongoDB
+        
+        # extraction des données depuis mongoDB
         for film in films_collection.find():
             title = film.get("title")
 
@@ -20,7 +21,7 @@ def create_nodes_and_relations():
             director = film.get("Director")
             actors = re.split(r',\s*', film.get("Actors", ""))
             
-            # Créer le noeud Film
+            # Création des noeuds Film
             session.run(
                 """
                 MERGE (f:Film {title: $title})
@@ -34,7 +35,7 @@ def create_nodes_and_relations():
                 metascore=film.get("Metascore")
             )
 
-            # Créer le noeud Realisateur
+            # Realisateur
             session.run(
                 """
                 MERGE (d:Realisateur {name: $director})
@@ -42,7 +43,7 @@ def create_nodes_and_relations():
                 director=director
             )
             
-            # Créer les relations A_REALISE entre Realisateur et Film
+            # Relation A_REALISE
             session.run(
                 """
                 MATCH (f:Film {title: $title})
@@ -53,7 +54,7 @@ def create_nodes_and_relations():
                 director=director
             )
 
-            # Créer les noeuds Genre et les relations APPARTIENT_A
+            # Création des noeuds Genre et des relations APPARTIENT_A
             for genre in genres:
                 session.run(
                     """
@@ -66,7 +67,7 @@ def create_nodes_and_relations():
                     title=title
                 )
 
-            # Créer les noeuds Actor et les relations A_JOUE
+            # Création des noeuds Actor et des relations A_JOUE
             for actor in actors:
                 session.run(
                     """

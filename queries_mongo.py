@@ -162,20 +162,16 @@ def create_view_high_rated_revenue():
 
 # 12. Calculer la corrélation entre la durée des films (Runtime) et leur revenu (Revenue). (réaliser une analyse statistique.)
 def analyze_runtime_revenue_correlation():
-    # Extraire uniquement les films ayant un Runtime et un Revenue valides
     data = collection.find(
         { "Runtime (Minutes)": { "$exists": True, "$ne": "" }, "Revenue (Millions)": { "$exists": True, "$ne": "" } },
         { "Runtime (Minutes)": 1, "Revenue (Millions)": 1, "_id": 0 }
     )
 
-    # Convertir les données en DataFrame
     df = pd.DataFrame(list(data))
 
-    # Convertir les colonnes en nombres
     df["Runtime (Minutes)"] = pd.to_numeric(df["Runtime (Minutes)"], errors="coerce")
     df["Revenue (Millions)"] = pd.to_numeric(df["Revenue (Millions)"], errors="coerce")
 
-    # Supprimer les valeurs NaN
     df = df.dropna()
 
     # Calcul de la corrélation de Pearson
@@ -193,14 +189,12 @@ def analyze_runtime_revenue_correlation():
     elif correlation == 0:
         interpretation = "Aucune corrélation"
 
-    # Affichage du coefficient de corrélation
     st.info(f"**Coefficient de corrélation de Pearson :** {correlation:.2f}  \n"
             f"{interpretation}")
 
 
 # 13. Y a-t-il une évolution de la durée moyenne des films par décennie ?
 def avg_runtime_per_decade():
-    # Requête MongoDB pour récupérer la durée moyenne par décennie
     results = collection.aggregate([
         { "$match": { "year": { "$exists": True, "$ne": None }, "Runtime (Minutes)": { "$exists": True, "$ne": "" } } },
         { "$addFields": { "decade": { "$subtract": ["$year", { "$mod": ["$year", 10] }] } } },

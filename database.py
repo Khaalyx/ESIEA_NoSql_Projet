@@ -12,9 +12,10 @@ NEO4J_URI=os.getenv("NEO4J_URI")
 NEO4J_USERNAME=os.getenv("NEO4J_USERNAME")
 NEO4J_PASSWORD=os.getenv("NEO4J_PASSWORD")
 
+# Connection à la base de données MongoDB
 def get_mongodb():
-    client = pymongo.MongoClient("mongodb://localhost:27017/")
-    
+    client = pymongo.MongoClient(MONGO_URI)
+    print(MONGO_URI)
     try:
         # Sélectionner la base de données
         db = client["entertainment"]
@@ -22,6 +23,7 @@ def get_mongodb():
     except Exception as e:
         print(f"Failed to connect to MongoDB: {e}")
 
+# Connection à la base de données Neo4J
 def get_neo4j():
     driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
     try:

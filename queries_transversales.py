@@ -99,8 +99,8 @@ def collab_success():
     result, _, _ = driver.execute_query(query, database_="neo4j")
 
     # Définir des seuils pour les succès commercial et critique
-    SUCCESS_COMMERCE_THRESHOLD = 100  # En millions de dollars
-    SUCCESS_CRITIQUE_THRESHOLD = 70   # Pour le metascore
+    SUCCES_COMMERCIAL = 100
+    SUCCES_CRITIQUE= 70
 
     # Convertir les résultats en liste de dictionnaires
     records = []
@@ -113,12 +113,10 @@ def collab_success():
             "avg_metascore": record["avg_metascore"]
         })
 
-    # Convertir la liste de dictionnaires en DataFrame
     df = pd.DataFrame(records)
 
-    # Ajouter une colonne pour analyser le succès commercial et critique
-    df["Succès Commercial"] = df["avg_revenue"].apply(lambda x: "Oui" if x >= SUCCESS_COMMERCE_THRESHOLD else "Non")
-    df["Succès Critique"] = df["avg_metascore"].apply(lambda x: "Oui" if x >= SUCCESS_CRITIQUE_THRESHOLD else "Non")
+    df["Succès Commercial"] = df["avg_revenue"].apply(lambda x: "Oui" if x >= SUCCES_COMMERCIAL else "Non")
+    df["Succès Critique"] = df["avg_metascore"].apply(lambda x: "Oui" if x >= SUCCES_CRITIQUE else "Non")
 
     # Afficher le DataFrame avec Streamlit
     st.dataframe(df, column_config={
